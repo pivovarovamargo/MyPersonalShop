@@ -76,3 +76,9 @@ def db_get_last_orders(chat_id, limit=5):
             limit(limit)
         )
         return session.scalars(query).all()
+
+def db_get_product_by_id(product_id):
+    pass
+
+def db_get_user_cart(chat_id):
+    pass
