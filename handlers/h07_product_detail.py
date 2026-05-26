@@ -16,3 +16,8 @@ async def show_product_view_(callback: CallbackQuery, bot: Bot):
     product_id=int(callback.data.split('_')[-1])
     product=db_get_product_by_id(product_id)
     user_cart=db_get_user_cart(chat_id)
+
+    if user_cart:
+        db_add_or_update_item(
+            cart_id, product_id, product_name, product_price, increment: int=0
+        ):
