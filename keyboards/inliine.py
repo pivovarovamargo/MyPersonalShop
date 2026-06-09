@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from database.models.products import Products
-from database.utils import db_get_finally_price, db_get_all_category, get_session
+from database.utils import db_get_finally_price, db_get_all_category, get_session, db_get_product
 
 
 def generate_category_menu(chat_id):
@@ -20,6 +20,8 @@ def generate_category_menu(chat_id):
 
     builder.adjust(1, 2)
     return builder.as_markup()
+
+
 def show_product_by_category(category_id: int):
     """кнопка для показа продуктов по категориям"""
     products = db_get_product(category_id)
@@ -27,9 +29,18 @@ def show_product_by_category(category_id: int):
     [builder.button(text=product.product_name, callback_data=f'product_view_{product.id}') for product in products]
     builder.adjust(2)
     builder.row(
-    InlineKeyboardButton(text="⬅ Назад", callback_data='return_to_category')
+        InlineKeyboardButton(text="⬅ Назад", callback_data='return_to_category')
     )
     return builder.as_markup()
-def db_get_product(category_id):
-    with get_session() as session:
-        query = select(Products).where(Products.category_id == category_id)
+
+
+def quantity_cart_controls(quantity=1):
+    '''изменение колва товаров в корзинев'''
+    builder = InlineKeyboardBuilder()
+    builder.button(text='➖',callback_data='action -')
+    builder.button(text=str(quantity), callback_data='quantity')
+    builder.button(text='➕', callback_data='action +')
+    builder.button(text='положить в корзину', callback_data='put_in_cart')
+    builder.button(text='⬅ Назад', callback_data='from_detail_to_category')
+    builder.adjust(3,1,1)
+    return builder.as_markup(resize_keyboard=True)
