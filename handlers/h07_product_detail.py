@@ -1,8 +1,10 @@
 from aiogram import Router, F, Bot
-from aiogram.types import CallbackQuery, FSInputFile
+from aiogram.types import CallbackQuery, FSInputFile, chat
 
 from bot_utils.message_caption import text_for_caption
-from database.utils import db_get_product_by_id, db_get_user_cart, db_add_or_update_item
+
+import keyboards
+from database.utils import db_get_product_by_id, db_get_user_cart, db_add_or_update_item, db_get_all_category
 from keyboards.inliine import quantity_cart_controls
 from keyboards.reply import phone_button
 
@@ -52,3 +54,19 @@ async def show_product_view(callback: CallbackQuery, bot: Bot):
 async def ask_for_phone(chat_id: int, bot: Bot):
     '''запрос номера телефона для неавторизованного пользователя'''
     await bot.send_message(chat_id=chat_id,text='предоставьте номер телефона для заказа', reply_markup=phone_button())
+
+
+@router.callback_query(F.data == 'from_detail_to_category')
+async def handel_back_to_category(callback: CallbackQuery, bot: Bot):
+    '''назад к кат.'''
+    chat_id = callback.message.chat.id
+    message_id = callback.message.message_id
+    try:
+        await bot.delete_message(chat_id=chat.id, message_id=message_id)
+    except Exception as e:
+        print(e)
+
+        categories = db_get_all_category()
+        if not categories:
+            await bot.send_message(chat_id=chat.id,text='кат. не найдены')
+            return
