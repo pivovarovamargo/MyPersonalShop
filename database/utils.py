@@ -84,6 +84,7 @@ def db_get_product_by_id(product_id):
         query = select(Products).where(Products.id == product_id)
         return session.scalar(query)
 
+
 def db_get_product(category_id):
     '''получение продуктов по ид категории'''
     with get_session() as session:
@@ -112,9 +113,9 @@ def db_add_or_update_item(
     try:
         with get_session() as session:
             item = (
-            session.query(FinallyCarts)
-            .filter_by(cart_id=cart_id, product_id=product_id)
-            .first()
+                session.query(FinallyCarts)
+                .filter_by(cart_id=cart_id, product_id=product_id)
+                .first()
             )
 
             if item:
@@ -138,9 +139,9 @@ def db_add_or_update_item(
             session.query(Carts).filter(Carts.id == cart_id).update({
                 Carts.total_price: products_sum,
                 Carts.total_products: total_products
-                })
+            })
             session.commit()
-            return {"status": "ok","total_price": float(products_sum),
+            return {"status": "ok", "total_price": float(products_sum),
                     "total_products": int(total_products),
                     "product_quantity": item.quantity
 
@@ -148,3 +149,10 @@ def db_add_or_update_item(
     except Exception as e:
         print(f"[db_add_or_update_item] Ошибка: {e}")
         return {"status": "error"}
+
+
+def db_get_product_by_name(product_name):
+    '''продукт по нфзванию'''
+    with get_session() as session:
+        query = select(Products).where(Products.product_name == product_name)
+        return session.scalar(query)
