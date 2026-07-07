@@ -5,15 +5,16 @@ from .users import Users
 
 
 class Carts(Base):
-    __tablename__ = "carts"#название класса в таблице
-    id: Mapped[int] = mapped_column(primary_key=True)#уникальный номер
-    total_price: Mapped[int] = mapped_column(DECIMAL(10, 2), default=0)#desimal - дробная ценаб, precsion -  всего символов, scale - знаки после зпт
-    total_products: Mapped[int] = mapped_column(default=0)#кол-во продуктов в корзине
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), unique=True)#вторичный ключ показывающий связь с перв. ключом таблицы users(users.id)
+    __tablename__ = "carts"  # название класса в таблице
+    id: Mapped[int] = mapped_column(primary_key=True)  # уникальный номер
+    total_price: Mapped[int] = mapped_column(DECIMAL(10, 2),
+                                             default=0)  # desimal - дробная ценаб, precsion -  всего символов, scale - знаки после зпт
+    total_products: Mapped[int] = mapped_column(default=0)  # кол-во продуктов в корзине
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"),
+                                         unique=True)  # вторичный ключ показывающий связь с перв. ключом таблицы users(users.id)
 
     user_cart: Mapped["Users"] = relationship(back_populates="carts")
     finally_id: Mapped[int] = relationship("FinallyCarts", back_populates="user_cart")
-
 
     def __str__(self):
         return str(self.id)

@@ -34,8 +34,9 @@ def back_to_main_menu():
     builder.button(text="Главное меню")
     return builder.as_markup(resize_keyboard=True)
 
+
 def back_arrow():
-    '''шфг назад'''
+    """возврат на шаг назад"""
     builder = ReplyKeyboardBuilder()
-    builder.button(text="<= назад")
+    builder.button(text="Назад ⬅️")
     return builder.as_markup(resize_keyboard=True)

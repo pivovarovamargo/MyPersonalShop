@@ -5,7 +5,9 @@ from aiogram import Router, F, Bot
 from handlers.h03_order import handle_main_menu
 
 
-router=Router()
+router = Router()
+
+
 @router.messege(F.text == '<= назад')
 async def back_to_category(message: Message, bot: Bot):
     try:
