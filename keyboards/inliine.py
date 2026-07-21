@@ -37,13 +37,22 @@ def show_product_by_category(category_id: int):
 def quantity_cart_controls(quantity=1):
     '''изменение колва товаров в корзинев'''
     builder = InlineKeyboardBuilder()
-    builder.button(text='➖',callback_data='action -')
+    builder.button(text='➖', callback_data='action -')
     builder.button(text=str(quantity), callback_data='quantity')
     builder.button(text='➕', callback_data='action +')
     builder.button(text='положить в корзину', callback_data='put_in_cart')
     builder.button(text='⬅ Назад', callback_data='from_detail_to_category')
-    builder.adjust(3,1,1)
+    builder.adjust(3, 1, 1)
     return builder.as_markup(resize_keyboard=True)
 
+
 def cart_actions_kb():
-    pass
+    '''оформление заказа, добавить и убрать товар'''
+    builder = InlineKeyboardBuilder()
+    builder.row(
+        InlineKeyboardButton(text='оформить заказ 🧾', callback_data='confirm_order'),
+        InlineKeyboardButton(text='убрать товар ➖', callback_data='choose_to_remove'),
+        InlineKeyboardButton(text='добавить товар ➕', callback_data='choose_to_add'),
+    )
+    builder.adjust(1, 2)
+    return builder.as_markup()
