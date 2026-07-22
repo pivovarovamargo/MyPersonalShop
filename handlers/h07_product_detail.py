@@ -56,7 +56,7 @@ async def ask_for_phone(chat_id: int, bot: Bot):
 
 @router.callback_query(F.data == "from_detail_to_category")
 async def handle_back_to_category(callback: CallbackQuery, bot: Bot):
-    """возврат из просмотра информации к категории"""
+    """возврат из просмотра информации к всем продуктам в категории"""
     chat_id = callback.message.chat.id
     message_id = callback.message.message_id
     try:
@@ -66,7 +66,7 @@ async def handle_back_to_category(callback: CallbackQuery, bot: Bot):
 
     categories = db_get_all_category()
     if not categories:
-        await bot.send_message(chat_id=chat_id, text='нет категорий')
+        await bot.send_message(chat_id=chat_id, text='Нет категорий')
         return
 
     keyboard = generate_category_menu(chat_id)

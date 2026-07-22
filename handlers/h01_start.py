@@ -11,7 +11,7 @@ router = Router()
 
 @router.message(CommandStart())
 async def command_start(message: Message):
-    """происходит приветствие с отправкой фото"""
+    """приветствие с отправкой фото"""
     photo = FSInputFile("media/welcome.jpg")
     await message.answer_photo(
         photo=photo,
@@ -31,7 +31,7 @@ async def handle_start(message: Message):
 
 
 async def register_user(message: Message):
-    """регистрация пользователя"""
+    """регистрация пользователя в базу данных"""
     chat_id = message.chat.id
     full_name = message.from_user.full_name
 

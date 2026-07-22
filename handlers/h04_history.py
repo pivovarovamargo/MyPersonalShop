@@ -18,6 +18,6 @@ async def show_order_history(message: Message):
     for item in orders:
         order = item["order"]
         line_price = float(order.final_price)
-        text += f"👍{order.product_name} {order.quantity} шт {line_price:.2f} руб"
+        text += f"👍{order.product_name}, {order.quantity} шт, {line_price:.2f} руб"
 
     await message.answer(text)

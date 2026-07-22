@@ -23,7 +23,7 @@ async def open_cart(callback: CallbackQuery):
 async def show_cart(chat_id, send_fn):
     cart_items=db_get_cart_items(chat_id)
     if not cart_items:
-        await send_fn('корзина пуста')
+        await send_fn('Корзина пуста')
         return
 
     text='содержимое корзины\n'

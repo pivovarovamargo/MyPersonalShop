@@ -8,7 +8,7 @@ from handlers.h03_order import handle_main_menu
 router = Router()
 
 
-@router.messege(F.text == '<= назад')
+@router.messege(F.text == '<= Назад')
 async def back_to_category(message: Message, bot: Bot):
     try:
         await bot.delete_message(message.chat.id, message.message_id)

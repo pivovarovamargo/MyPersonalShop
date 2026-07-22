@@ -17,7 +17,7 @@ async def make_order(message:Message, bot):
 
 @router.message(F.text=='Главное меню')
 async def handle_main_menu(message:Message, bot):
-    '''переход в глав меню с удалением предидущего сообщения'''
+    '''переход в главное меню с удалением предидущего сообщения'''
     try:
         await bot.delete_message(chat_id=message.chat.id, message_id=message.message_id)
     except TelegramBadRequest:

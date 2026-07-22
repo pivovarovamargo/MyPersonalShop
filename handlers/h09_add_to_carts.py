@@ -9,19 +9,19 @@ router = Router()
 
 @router.callback_query(F.data == "положить в корзину")
 async def put_in_cart(callback: CallbackQuery, bot: Bot):
-    """Добавление товара в корзину"""
+    """добавление товара в корзину"""
     chat_id = callback.message.chat.id
     message = callback.message
 
     caption = message.caption
     if not caption:
-        await bot.send_message(chat_id=chat_id, text="нет сообщения")
+        await bot.send_message(chat_id=chat_id, text="Нет сообщения")
         return
 
     product_name = caption.split('\n')[0]
     cart = db_get_user_cart(chat_id)
     if not cart:
-        await bot.send_message(chat_id=chat_id, text="вы не авторизованы")
+        await bot.send_message(chat_id=chat_id, text="Вы не авторизованы")
 
     product = db_get_product_by_name(product_name)
     result = db_add_or_update_item(

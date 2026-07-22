@@ -9,7 +9,7 @@ router = Router()
 
 @router.message(F.contact)
 async def update_info_user(message: Message):
-    """Обновление, добавление номера телефона"""
+    """обновление, добавление номера телефона"""
     chat_id = message.chat.id
     phone = message.contact.phone_number
 
@@ -21,5 +21,5 @@ async def update_info_user(message: Message):
 
 
 async def show_main_menu(message: Message):
-    """Основное меню"""
+    """выход в основное меню"""
     await message.answer(text="Сделайте выбор", reply_markup=get_main_menu())

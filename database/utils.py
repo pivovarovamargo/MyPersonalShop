@@ -12,7 +12,7 @@ def get_session():
 
 
 def db_register_user(full_name, chat_id):
-    """регистрация юзера в дб"""
+    """регистрация пользователя в базу данных"""
     try:
         with get_session() as session:
             query = Users(name=full_name, telegram=chat_id)
@@ -24,7 +24,7 @@ def db_register_user(full_name, chat_id):
 
 
 def db_update_user(chat_id, phone):
-    """изменение данных у пользователя, добавление его номера телефона"""
+    """изменение данных в базе данных(пользователь), добавление номера телефона"""
     with get_session() as session:
         query = update(Users).where(Users.telegram == chat_id).values(phone=phone)
         session.execute(query)
@@ -32,7 +32,7 @@ def db_update_user(chat_id, phone):
 
 
 def db_create_user_cart(chat_id):
-    """создание корзины юзера"""
+    """создание корзины пользователя"""
     try:
         with get_session() as session:
             subquery = session.scalar(select(Users).where(Users.telegram == chat_id))
@@ -54,7 +54,7 @@ def db_get_all_category():
 
 
 def db_get_finally_price(chat_id):
-    """Получение итоговой cуммы"""
+    """Получение итоговой суммы заказа"""
 
     with get_session() as session:
         query = select(func.sum(FinallyCarts.final_price)).select_from(
@@ -79,7 +79,7 @@ def db_get_last_orders(chat_id, limit=5):
 
 
 def db_get_product(category_id):
-    """Получение продукта по id категории"""
+    """Получение продуктов в категории по её id"""
 
     with get_session() as session:
         query = select(Products).where(Products.category_id == category_id)
@@ -87,13 +87,14 @@ def db_get_product(category_id):
 
 
 def db_get_product_by_id(product_id):
-    """"Получение продукта по id"""
+    """"Получение продукта по его id"""
     with get_session() as session:
         query = select(Products).where(Products.id == product_id)
         return session.scalars(query)
 
 
 def db_get_user_cart(chat_id):
+    '''получение корзины конкретного пользователя'''
     with get_session() as session:
         query = (
             select(Carts).
@@ -109,6 +110,7 @@ def db_add_or_update_item(
         product_price: DECIMAL,
         increment: int = 0
 ):
+    '''добавление, изменение количества товаров в корзине'''
     try:
         with get_session() as session:
             item = (

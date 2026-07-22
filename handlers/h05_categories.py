@@ -26,7 +26,7 @@ async def show_product(callback: CallbackQuery):
 
 @router.callback_query(F.data == "return_to_category")
 async def return_to_category(callback: CallbackQuery):
-    """Возрат к списку категорий"""
+    """возрат к списку категорий"""
     chat_id = callback.message.chat.id
     message_id = callback.message.message_id
 

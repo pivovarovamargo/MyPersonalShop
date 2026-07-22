@@ -23,7 +23,7 @@ def generate_category_menu(chat_id):
 
 
 def show_product_by_category(category_id: int):
-    """кнопка для показа продуктов по категориям"""
+    """кнопка для показа продуктов в категории"""
     products = db_get_product(category_id)
     builder = InlineKeyboardBuilder()
     [builder.button(text=product.product_name, callback_data=f'product_view_{product.id}') for product in products]
@@ -35,7 +35,7 @@ def show_product_by_category(category_id: int):
 
 
 def quantity_cart_controls(quantity=1):
-    '''изменение колва товаров в корзинев'''
+    '''изменение количествава товаров в корзинев'''
     builder = InlineKeyboardBuilder()
     builder.button(text='➖', callback_data='action -')
     builder.button(text=str(quantity), callback_data='quantity')
