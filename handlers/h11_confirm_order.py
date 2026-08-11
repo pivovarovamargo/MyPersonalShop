@@ -33,7 +33,7 @@ async def confirm_order(callback: CallbackQuery, bot: Bot):
     await bot.send_message(MANAGER,text,parse_mode='html')
 
     db_save_order_history(user.id)
-    db_clean_final_cart()
+    db_clean_final_cart(callback.from_user.id)
 
-    await callback.message.edit_text('')
-    await callback.answer()
+    await callback.message.edit_text('Заказ принят, ожидайте обратной связи')
+    await callback.answer("Заказ оформлен")
