@@ -1,0 +1,8 @@
+from os import getenv
+from dotenv import load_dotenv
+import os
+'''подготовка к работе бота'''
+load_dotenv()
+
+TOKEN = getenv('TOKEN')
+MANAGER_ID=int(os.getenv('MANAGER_ID', 0))

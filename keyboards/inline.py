@@ -1,0 +1,82 @@
+from aiogram.types import InlineKeyboardButton
+from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+from config import MANAGER_ID
+from database.utils import db_get_all_categories, db_get_finally_price, db_get_product
+
+def generate_category_menu(chat_id):
+    """создоние клавиатуры с выбором категорий"""
+    categories = db_get_all_categories()
+    total_price = db_get_finally_price(chat_id)
+
+    builder = InlineKeyboardBuilder()
+    builder.button(
+        text=f"корзина заказа ({total_price if total_price else 0} руб.)",
+        callback_data="🍉🍉🍉 Корзина заказа 🍉🍉🍉"
+    )
+    [builder.button(text=category.category_name, callback_data=f'category_{category.id}')
+     for category in categories]
+    builder.adjust(1, 2)
+    return builder.as_markup()
+
+def show_product_by_category(category_id: int):
+    """кнопка для показа продуктов по категориям"""
+    products = db_get_product(category_id)
+    builder = InlineKeyboardBuilder()
+    [builder.button(text=product.product_name, callback_data=f'product_view_{product.id}') for product in products]
+    builder.adjust(2)
+    builder.row(
+        InlineKeyboardButton(text="⬅️ Назад", callback_data='return_to_category')
+    )
+    return builder.as_markup()
+
+def quantity_cart_controls(quantity =1):
+    """кнопки для изменения количества товара в корзине"""
+    builder = InlineKeyboardBuilder()
+    builder.button(text='➖', callback_data='action -')
+    builder.button(text=str(quantity) , callback_data='quantity')
+    builder.button(text='➕', callback_data='action +')
+    builder.button(text='🍉🍉🍉 добавить в корзину 🍉🍉🍉', callback_data='положить в корзину')
+    builder.button(text='⬅️ Назад', callback_data='from_detail_to_category')
+
+    builder.adjust(3,1,1)
+    return builder.as_markup(resize_keyboard=True)
+
+def cart_actions_kb():
+    '''добавить, оформить, убрать из карзины'''
+    builder = InlineKeyboardBuilder()
+    builder.row(
+            InlineKeyboardButton(text='🍉🍉🍉 оформить заказ 🍉🍉🍉', callback_data='confirm_order'),
+            InlineKeyboardButton(text='🍉🍉🍉 удалить товары 🍉🍉🍉', callback_data='remove_item'),
+            InlineKeyboardButton(text='🍉🍉🍉 добавить товар 🍉🍉🍉', callback_data='add_item'),
+        )
+    builder.adjust(1,2)
+    return builder.as_markup(resize_keyboard=True)
+
+def get_settings_menu():
+    """меню настроек"""
+    builder = InlineKeyboardBuilder()
+    builder.button(text='🍉🍉🍉Сменить язык🍉🍉🍉', callback_data='change_language')
+    builder.button(text='🍉🍉🍉удалить аккаунт🍉🍉🍉', callback_data='delete_account')
+    if MANAGER_ID:
+        builder.button(text='🍉🍉🍉связаться с менеджером🍉🍉🍉', url=f'tg://user?id={MANAGER_ID}')
+    builder.button(text='⬅️ Назад', callback_data='back_to_menu')
+    builder.adjust(1)
+    return builder.as_markup()
+
+def get_language_keyboard():
+    '''🍉🍉🍉меню выбора языка🍉🍉🍉'''
+    builder = InlineKeyboardBuilder()
+    builder.button(text='🇷🇺 Русский', callback_data='lang_ru')
+    builder.button(text='🇺🇸 English', callback_data='lang_en')
+    builder.button(text='⬅️ Назад', callback_data='settings_menu')
+    builder.adjust(1)
+    return builder.as_markup()
+
+def delete_account_kb():
+    """🍉🍉🍉подтверждение удаления аккаунта🍉🍉🍉"""
+    builder = InlineKeyboardBuilder()
+    builder.button(text='🍉🍉🍉 Да 🍉🍉🍉', callback_data='confirm_delete')
+    builder.button(text='🍉🍉🍉 Нет 🍉🍉🍉', callback_data='settings_menu')
+    builder.adjust(1)
+    return builder.as_markup()
